@@ -19,20 +19,29 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("VPS Bot Connected")
 
 
+# Carica il contesto dal file
+def load_context():
+    try:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        context_file = os.path.join(script_dir, "DTech.1bf.txt")
+        with open(context_file, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        print("Warning: DTech.1bf.txt not found, using default context")
+        return "Contesto: Nessun contesto specifico disponibile."
+
+
+# Carica il contesto all'avvio
+CONTEXT_TEXT = load_context()
+
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text
     
-    # Contesto predefinito
-    context_text = """
-    Contesto: Il Freddano è una località situata nei pressi di Viterbo.
-    L'olio extravergine di oliva del Freddano proviene da 23 antichi ulivi di varietà miste.
-    Per la molitura viene utilizzata una tradizionale macina in pietra.
-    """
-    
-    # Richiesta a Mistral AI con contesto
+    # Richiesta a Mistral AI con contesto dal file
     chat_response = mistral_client.chat.complete(
         model="mistral-small-latest",
-        messages=[{"role": "user", "content": f"{context_text}\n\nDomanda: {user_text}"}]
+        messages=[{"role": "user", "content": f"Contesto: {CONTEXT_TEXT}\n\nDomanda: {user_text}"}]
     )
     
     # Estrai la risposta dell'AI
