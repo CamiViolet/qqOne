@@ -9,20 +9,16 @@ from mistralai import Mistral
 import google.generativeai as genai
 from openai import OpenAI
 
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Inizializza il client Mistral
-mistral_client = Mistral(api_key=MISTRAL_API_KEY)
+mistral_client = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
 
 # Inizializza il client Gemini
-genai.configure(api_key=GEMINI_API_KEY)
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 gemini_model = genai.GenerativeModel('gemini-2.0-flash-lite')
 
 # Inizializza il client OpenAI
-openai_client = OpenAI(api_key=OPENAI_API_KEY)
+openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -53,7 +49,8 @@ async def handle_message_mistral(update: Update, context: ContextTypes.DEFAULT_T
     # Richiesta a Mistral AI con contesto dal file
     chat_response = mistral_client.chat.complete(
         model="mistral-small-latest",
-        messages=[{"role": "user", "content": f"Contesto: {CONTEXT_TEXT}\n\nDomanda: {user_text}"}]
+        # messages=[{"role": "user", "content": f"Contesto: {CONTEXT_TEXT}\n\nDomanda: {user_text}"}]
+        messages=[{"role": "user", "content": f"Domanda: {user_text}"}]
     )
     
     # Estrai la risposta dell'AI
@@ -91,9 +88,9 @@ async def handle_message_openai(update: Update, context: ContextTypes.DEFAULT_TY
 
 
 if __name__ == '__main__':
-    app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
+    app = ApplicationBuilder().token(os.getenv("TELEGRAM_TOKEN")).build()
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message_openai))
+    app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message_mistral))
     # app.add_handler(CommandHandler("gemini", handle_message_gemini))
     print("Bot collegato, in ascolto...")
     app.run_polling()
