@@ -21,10 +21,6 @@ def txt_to_1bf(input_dir):
     Args:
         input_dir (str): Directory containing the input .txt files
     """
-    # Check if input directory exists
-    if not os.path.isdir(input_dir):
-        print(f"Error: Input directory '{input_dir}' not found.")
-        sys.exit(1)
 
     output_dir = input_dir.replace("_txt", "") + "_1bf"     # Directory where the output file will be saved
     
@@ -34,19 +30,18 @@ def txt_to_1bf(input_dir):
     
     # Find all .txt files in the input directory (no recursion)
     txt_files = [f for f in os.listdir(input_dir) if f.endswith('.txt') and os.path.isfile(os.path.join(input_dir, f))]
-    
-    if not txt_files:
-        print(f"No .txt files found in '{input_dir}'")
-        sys.exit(0)
+
+    # Find all .txt files in the input directory (no recursion)
+    txt_files = [f for f in txt_files if not f[0].isdigit() or int(os.path.basename(f)[:4]) >= 2020]
     
     print(f"Found {len(txt_files)} .txt file(s) to concatenate...")
     
     # Sort files for consistent ordering
-    txt_files.sort()
+    txt_files.sort(reverse=True)
     
     # Concatenate all text files
     all_content = []
-    all_content.append(f"\nL'autore di queste note è Carlo.\n\n")
+    all_content.append(f"\nL'autore di queste note sono io, Carlo.\n\n")
     for txt_file in txt_files:
         txt_path = os.path.join(input_dir, txt_file)
         
@@ -55,8 +50,6 @@ def txt_to_1bf(input_dir):
             content = file.read()
             # Add filename separator before content
             all_content.append(f"\nFile: {txt_file}\n\n{content}")
-        
-        print(f"Read '{txt_file}'")
     
     # Join all content with double newlines between files
     concatenated_content = '\n\n'.join(all_content)
@@ -75,7 +68,7 @@ def txt_to_1bf(input_dir):
 if __name__ == "__main__":
     sys.excepthook = excepthook
 
-    input_directory = r"C:\Dev_TTT\DTech-20251122T165535Z-1-001\DTech_txt"
+    input_directory = r"C:\Dev_TTT\DTech-20251226T145049Z-3-001\DTech_txt"
     txt_to_1bf(input_directory)
 
 # import pdb; pdb.set_trace()
