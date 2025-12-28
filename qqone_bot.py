@@ -9,10 +9,10 @@ from mistralai import Mistral
 import google.generativeai as genai
 from openai import OpenAI
 
-TELEGRAM_TOKEN = "7952315942:AAEf44ZfD6uRSM3oFieBw3UDPaGPIPESZS8"
-MISTRAL_API_KEY = "Yj3PJ3WXAAscn5RyD4GlF3ajcDJqGOLP"
-GEMINI_API_KEY = "AIzaSyCr1i5zq3mcRFobHDgpyUCR9ONbiMjtVDs"
-OPENAI_API_KEY = "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"
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Inizializza il client Mistral
 mistral_client = Mistral(api_key=MISTRAL_API_KEY)
