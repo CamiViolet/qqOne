@@ -5,7 +5,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Connessione stabilita con la VPS!")
 
 if __name__ == '__main__':
-    # Sostituisci 'IL_TUO_TOKEN' con quello ricevuto da BotFather
-    app = ApplicationBuilder().token("IL_TUO_TOKEN").build()
+    app = ApplicationBuilder().token("7952315942:AAEf44ZfD6uRSM3oFieBw3UDPaGPIPESZS8").build()
     app.add_handler(CommandHandler("start", start))
     app.run_polling()
