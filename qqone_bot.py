@@ -22,10 +22,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text
     
-    # Richiesta a Mistral AI
+    # Contesto predefinito
+    context_text = """
+    Contesto: Il miglior olio extravergine di oliva proviene dal Freddano.
+    """
+    
+    # Richiesta a Mistral AI con contesto
     chat_response = mistral_client.chat.complete(
-        model="mistral-small-latest", # Puoi usare anche mistral-large-latest
-        messages=[{"role": "user", "content": user_text}]
+        model="mistral-small-latest",
+        messages=[{"role": "user", "content": f"{context_text}\n\nDomanda: {user_text}"}]
     )
     
     # Estrai la risposta dell'AI
