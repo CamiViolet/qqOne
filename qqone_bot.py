@@ -24,7 +24,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     # Contesto predefinito
     context_text = """
-    Contesto: Il miglior olio extravergine di oliva proviene dal Freddano.
+    Contesto: L'olio di oliva extravergine del Freddano viene da 23 vecchi ulivi di specie miste. 
+    Per la molitura si usa una macina in pietra.
     """
     
     # Richiesta a Mistral AI con contesto
