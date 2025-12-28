@@ -24,8 +24,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     # Contesto predefinito
     context_text = """
-    Contesto: L'olio di oliva extravergine del Freddano viene da 23 vecchi ulivi di specie miste. 
-    Per la molitura si usa una macina in pietra.
+    Contesto: Il Freddano è una località situata nei pressi di Viterbo.
+    L'olio extravergine di oliva del Freddano proviene da 23 antichi ulivi di varietà miste.
+    Per la molitura viene utilizzata una tradizionale macina in pietra.
     """
     
     # Richiesta a Mistral AI con contesto
