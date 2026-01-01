@@ -3,12 +3,17 @@ qqOne BOT
 """
 
 import os
+from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 from mistralai import Mistral
-import google.generativeai as genai
-from openai import OpenAI
+import google.genai as genai
+# from openai import OpenAI
 
+# Load environment variables from .env file
+script_dir = os.path.dirname(os.path.abspath(__file__))
+dotenv_path = os.path.join(script_dir, '.env')
+load_dotenv(dotenv_path)
 
 # Inizializza il client Mistral
 mistral_client = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
@@ -63,7 +68,7 @@ async def handle_message_gemini(update: Update, context: ContextTypes.DEFAULT_TY
     
     # Richiesta a Gemini AI con contesto dal file
     prompt = f"Contesto: {CONTEXT_TEXT}\n\nDomanda: {user_text}"
-    response = gemini_model.generate_content(prompt)
+    response = await gemini_model.generate_content_async(prompt)
     
     # Estrai la risposta dell'AI
     ai_reply = response.text
@@ -90,7 +95,6 @@ async def handle_message_openai(update: Update, context: ContextTypes.DEFAULT_TY
 if __name__ == '__main__':
     app = ApplicationBuilder().token(os.getenv("TELEGRAM_TOKEN")).build()
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message_mistral))
-    # app.add_handler(CommandHandler("gemini", handle_message_gemini))
+    app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message_gemini))
     print("Bot collegato, in ascolto...")
     app.run_polling()
